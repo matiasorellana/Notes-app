@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addNoteButton = document.getElementById('addNote');
 
     const loadNotes = async () => {
-        const response = await fetch('/notas');
+        const response = await fetch('/notes');
         const notes = await response.json();
         notesContainer.innerHTML = '';
         notes.forEach(note => {
@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
             noteElement.innerHTML = `
                 <h2>${note.title}</h2>
                 <p>${note.content}</p>
-                <p><small>Etiquetas: ${note.tags.join(', ')}</small></p>
-                <p><small>Creado: ${new Date(note.created_at).toLocaleString()}</small></p>
-                <p><small>Actualizado: ${new Date(note.updated_at).toLocaleString()}</small></p>
-                <button data-id="${note.id}" class="edit-note">Editar</button>
-                <button data-id="${note.id}" class="delete-note">Eliminar</button>
+                <p><small>Labels: ${note.tags.join(', ')}</small></p>
+                <p><small>Created: ${new Date(note.created_at).toLocaleString()}</small></p>
+                <p><small>Updated: ${new Date(note.updated_at).toLocaleString()}</small></p>
+                <button data-id="${note.id}" class="edit-note">Edit Note</button>
+                <button data-id="${note.id}" class="delete-note">Delete Note</button>
             `;
             notesContainer.appendChild(noteElement);
         });
@@ -36,10 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (event.target.classList.contains('delete-note')) {
             const noteId = event.target.dataset.id;
-            await fetch(`/notas/${noteId}`, {
+            await fetch(`/notes/${noteId}`, {
                 method: 'DELETE'
             });
-            obtenerNotas();
+            loadNotes();
         }
     });
 });

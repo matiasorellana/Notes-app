@@ -29,24 +29,24 @@ app.get('/edit.html', (req, res) => {
 });
 
 // API to get the notes
-app.get('/notas', (req, res) => {
+app.get('/notes', (req, res) => {
     res.json(notes);
 });
 
 // API to get notes by id
-app.get('/notas/:id', (req, res) => {
+app.get('/notes/:id', (req, res) => {
     const note = notes.find(n => n.id === req.params.id);
     if (note) {
         res.json(note);
     } else {
-        res.status(404).send('Nota no encontrada');
+        res.status(404).send('Note not found');
     }
 });
 
 // API to create a note
-app.post('/notas', (req, res) => {
+app.post('/notes', (req, res) => {
     const newNote = {
-        id: generateShortUUID(),
+        id: generateId(),
         title: req.body.title,
         content: req.body.content,
         created_at: new Date(),
@@ -58,7 +58,7 @@ app.post('/notas', (req, res) => {
 });
 
 // API to update a note
-app.put('/notas/:id', (req, res) => {
+app.put('/notes/:id', (req, res) => {
     const noteIndex = notes.findIndex(n => n.id === req.params.id);
     if (noteIndex !== -1) {
         notes[noteIndex] = {
@@ -70,12 +70,12 @@ app.put('/notas/:id', (req, res) => {
         };
         res.json(notes[noteIndex]);
     } else {
-        res.status(404).send('Nota no encontrada');
+        res.status(404).send('Note not found');
     }
 });
 
 // API to delete a note
-app.delete('/notas/:id', (req, res) => {
+app.delete('/notes/:id', (req, res) => {
     notes = notes.filter(n => n.id !== req.params.id);
     res.status(204).send();
 });
