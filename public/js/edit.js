@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const noteId = urlParams.get('id');
     const noteForm = document.getElementById('note-form');
+    const deleteNoteButton = document.getElementById('delete-note');
 
     if (noteId) {
         // Fetch the note details and populate the form
@@ -11,6 +12,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('note-title').value = note.title;
         document.getElementById('note-content').value = note.content;
         document.getElementById('note-tags').value = note.tags.join(', ');
+    } else {
+        deleteNoteButton.style.display = 'none'; // Ocultar el botón si no es edición
     }
 
     noteForm.addEventListener('submit', async (event) => {
@@ -32,5 +35,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         window.location.href = '/';
+    });
+
+    deleteNoteButton.addEventListener('click', async () => {
+        const id = document.getElementById('note-id').value;
+        if (id) {
+            await fetch(`/notes/${id}`, {
+                method: 'DELETE'
+            });
+            window.location.href = '/';
+        }
     });
 });
